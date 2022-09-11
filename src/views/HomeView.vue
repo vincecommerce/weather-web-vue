@@ -1,67 +1,53 @@
 <template>
-  <div class="block p-6 rounded-lg shadow-lg bg-white max-w-sm">
-    <form @submit.prevent="showMessage()">
-      <div class="form-group mb-6">
-        <label
-          for="exampleInputEmail1"
-          class="form-label inline-block mb-2 text-gray-700"
-          >Email address</label
-        >
-        <input
-          type="email"
-          class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-          id="exampleInputEmail1"
-          aria-describedby="emailHelp"
-          placeholder="Enter email"
-        />
-        <small id="emailHelp" class="block mt-1 text-xs text-gray-600"
-          >We'll never share your email with anyone else.</small
-        >
+  <div class="flex justify-center mt-24">
+    <div class="block rounded-lg shadow-lg bg-white max-w-sm text-center">
+      <div class="p-6">
+        <h5 class="text-gray-900 text-xl font-medium mb-2">Weather web</h5>
+        <p class="text-gray-700 text-base mb-4">
+          Simple app to get the weather from a city using OpenWeather api
+        </p>
+        <div class="flex justify-between">
+          <button
+            type="button"
+            class="inline-block px-6 py-2.5 bg-transparent text-blue-600 font-medium text-xs leading-tight uppercase rounded hover:bg-gray-100 focus:text-blue-700 focus:bg-gray-100 focus:outline-none focus:ring-0 active:bg-gray-200 active:text-blue-800 transition duration-300 ease-in-out"
+            @click.prevent="loginRedirect()"
+          >
+            login
+          </button>
+          <button
+            type="button"
+            class="inline-block px-6 py-2.5 bg-transparent text-blue-600 font-medium text-xs leading-tight uppercase rounded hover:bg-gray-100 focus:text-blue-700 focus:bg-gray-100 focus:outline-none focus:ring-0 active:bg-gray-200 active:text-blue-800 transition duration-300 ease-in-out"
+            @click.prevent="signupRedirect()"
+          >
+            sign up
+          </button>
+          <button
+            type="button"
+            class="inline-block px-6 py-2.5 bg-transparent text-blue-600 font-medium text-xs leading-tight uppercase rounded hover:bg-gray-100 focus:text-blue-700 focus:bg-gray-100 focus:outline-none focus:ring-0 active:bg-gray-200 active:text-blue-800 transition duration-300 ease-in-out"
+            @click.prevent="weatherRedirect()"
+          >
+            weather
+          </button>
+        </div>
       </div>
-      <div class="form-group mb-6">
-        <label
-          for="exampleInputPassword1"
-          class="form-label inline-block mb-2 text-gray-700"
-          >Password</label
-        >
-        <input
-          type="password"
-          class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-          id="exampleInputPassword1"
-          placeholder="Password"
-        />
-      </div>
-      <div class="form-group form-check mb-6">
-        <input
-          type="checkbox"
-          class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-          id="exampleCheck1"
-        />
-        <label
-          class="form-check-label inline-block text-gray-800"
-          for="exampleCheck1"
-          >Check me out</label
-        >
-      </div>
-      <button
-        type="submit"
-        class="px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-      >
-        Submit
-      </button>
-    </form>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-export default {
-  setup() {
-    return {}
-  },
+import { defineComponent } from 'vue'
+
+export default defineComponent({
   methods: {
-    showMessage() {
-      alert('show me this')
+    loginRedirect() {
+      return this.$router.push('/login')
+    },
+    signupRedirect() {
+      return this.$router.push('/register')
+    },
+    weatherRedirect() {
+      return this.$router.push('/weather')
     },
   },
-}
+})
 </script>
