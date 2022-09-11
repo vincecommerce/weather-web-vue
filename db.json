@@ -1,3 +1,11 @@
 {
-  "users": []
+  "users": [
+    {
+      "name": "",
+      "surname": "",
+      "email": "sss@missing.com",
+      "password": "12345",
+      "id": 1
+    }
+  ]
 }

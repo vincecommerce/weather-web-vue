@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center items-center h-screen">
     <div class="block p-6 rounded-lg shadow-lg bg-white w-96">
-      <form @click.prevent="login()">
+      <form @submit.prevent="login()">
         <div class="form-group mb-6">
           <label
             for="emailInput"

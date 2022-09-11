@@ -1,7 +1,7 @@
 <template>
   <div class="flex justify-center items-center h-screen">
     <div class="block p-6 rounded-lg shadow-lg bg-white w-96">
-      <form @click.prevent="register()">
+      <form @submit.prevent="register()">
         <div class="form-group mb-6">
           <label
             for="nameInput"
@@ -14,6 +14,7 @@
             id="nameInput"
             aria-describedby="nameHelp"
             placeholder="Enter your name"
+            v-model="name"
           />
         </div>
         <div class="form-group mb-6">
@@ -28,6 +29,7 @@
             id="surnameInput"
             aria-describedby="surnameHelp"
             placeholder="Enter your surname"
+            v-model="surname"
           />
         </div>
         <div class="form-group mb-6">
@@ -42,6 +44,8 @@
             id="emailInput"
             aria-describedby="emailHelp"
             placeholder="Enter your email"
+            v-model="email"
+            required
           />
         </div>
         <div class="form-group mb-6">
@@ -55,6 +59,8 @@
             class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             id="passwordInput"
             placeholder="Enter a password"
+            v-model="password"
+            required
           />
         </div>
         <button
@@ -70,11 +76,35 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import axios from 'axios'
 
 export default defineComponent({
+  data() {
+    return {
+      name: '',
+      surname: '',
+      email: '',
+      password: '',
+    }
+  },
   methods: {
-    register() {
-      alert('Your account has been created')
+    async register() {
+      const pattern = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i
+      if (pattern.test(this.email)) {
+        if (this.password.length >= 5) {
+          await axios.post('http://localhost:3000/api/users', {
+            name: this.name,
+            surname: this.surname,
+            email: this.email,
+            password: this.password,
+          })
+          return this.$router.push('/login')
+        } else {
+          alert('Invalid password length')
+        }
+      } else {
+        alert('Invalid email')
+      }
     },
   },
 })

@@ -8,7 +8,7 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
-    "server": "npx json-server --watch db.json",
+    "server": "npx json-server --watch db.json --routes routes.json",
     "dev:server": "npx concurrently \"npm run server\" \"npm run dev\""
   },
   "dependencies": {
