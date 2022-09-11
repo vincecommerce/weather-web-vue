@@ -76,6 +76,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { userExists } from '../utils'
 import axios from 'axios'
 
 export default defineComponent({
@@ -90,7 +91,8 @@ export default defineComponent({
   methods: {
     async register() {
       const pattern = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i
-      if (pattern.test(this.email)) {
+      const userRegistered = await userExists(this.email)
+      if (pattern.test(this.email) && !userRegistered) {
         if (this.password.length >= 5) {
           await axios.post('http://localhost:3000/api/users', {
             name: this.name,

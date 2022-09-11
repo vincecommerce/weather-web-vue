@@ -14,6 +14,8 @@
             id="emailInput"
             aria-describedby="emailHelp"
             placeholder="Enter email"
+            v-model="email"
+            required
           />
         </div>
         <div class="form-group mb-6">
@@ -27,6 +29,8 @@
             class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             id="passwordInput"
             placeholder="Password"
+            v-model="password"
+            required
           />
         </div>
         <button
@@ -42,11 +46,29 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { getUser } from '@/utils'
+import { uuid } from 'vue-uuid'
 
 export default defineComponent({
+  data() {
+    return {
+      email: '',
+      password: '',
+    }
+  },
   methods: {
-    login() {
-      alert('You are now logged')
+    async login() {
+      const user = await getUser(this.email)
+      if (user.length >= 1) {
+        if (user[0].password === this.password) {
+          localStorage.setItem('token', uuid.v4())
+          return this.$router.push('/weather')
+        } else {
+          alert('Invalid email or password')
+        }
+      } else {
+        alert('Invalid email or password')
+      }
     },
   },
 })

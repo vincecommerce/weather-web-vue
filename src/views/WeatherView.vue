@@ -11,7 +11,7 @@
     <button
       type="submit"
       class="ml-6 px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-      @click="getWeather()"
+      @click="weather()"
     >
       search
     </button>
@@ -64,36 +64,42 @@
             <tbody>
               <tr
                 class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
+                v-for="item in weatherItem"
               >
                 <td
                   class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
                 >
-                  1
+                  {{ item.weather[0].id }}
                 </td>
                 <td
                   class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                 >
-                  Mark
+                  {{ item.weather[0].main }}
                 </td>
                 <td
                   class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                 >
-                  Otto
+                  {{ item.weather[0].description }}
                 </td>
                 <td
                   class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                 >
-                  @mdo
+                  <img
+                    v-bind:src="getImageLink(item.weather[0].icon)"
+                    alt="no image"
+                    width="50"
+                    height="50"
+                  />
                 </td>
                 <td
                   class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                 >
-                  @twitter
+                  {{ getDate(item.dt_txt) }}
                 </td>
                 <td
                   class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
                 >
-                  @twitter
+                  {{ getTimestamp(item.dt_txt) }}
                 </td>
               </tr>
             </tbody>
@@ -102,20 +108,54 @@
       </div>
     </div>
   </div>
+  <button
+    type="submit"
+    class="ml-10 mt-10 px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+    @click="logout()"
+  >
+    logout
+  </button>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { getCoords, getWeather } from '../utils'
+import type { WeatherListItem } from './types'
 
 export default defineComponent({
   data() {
+    const weatherItem: WeatherListItem[] = []
     return {
       city: '',
+      weatherItem,
     }
   },
   methods: {
-    getWeather() {
-      alert(`The city is ${this.city}`)
+    getImageLink(icon: string): string {
+      return `https://openweathermap.org/img/wn/${icon}@2x.png`
+    },
+    getDate(date: string): string {
+      return date.slice(0, date.indexOf(' '))
+    },
+    getTimestamp(date: string): string {
+      return date.slice(date.indexOf(' ') + 1, date.length)
+    },
+    logout() {
+      localStorage.removeItem('token')
+      return this.$router.push('/')
+    },
+    async weather() {
+      const coords = await getCoords(this.city)
+      if (coords !== undefined) {
+        const items = await getWeather(coords.lat, coords.lon)
+        if (items !== undefined) {
+          this.weatherItem = items
+        } else {
+          alert('Something has gon wrong')
+        }
+      } else {
+        alert('City not found')
+      }
     },
   },
 })
