@@ -27,6 +27,9 @@ const router = createRouter({
       path: '/weather',
       name: 'WeatherView',
       component: WeatherView,
+      beforeEnter: () => {
+        return localStorage.getItem('token') !== null
+      },
     },
     {
       path: '/:pathMatch(.*)*',
